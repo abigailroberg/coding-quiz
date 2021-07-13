@@ -1,0 +1,30 @@
+body {
+    padding: 25px;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 16px;
+}
+
+div {
+    padding-top: 50px;
+    margin: auto;
+    width: 50%;
+    text-align: center;
+}
+
+.time {
+    float: right;
+}
+
+#new-question-btn {
+    color: white;
+    background-color: #470aad;
+    height: 30px;
+    width: 100px;
+    border-radius: 10px;
+}
+
+#high-score-btn {
+    color: #DF00FE;
+    background-color: white;
+    border: none;
+}

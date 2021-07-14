@@ -4,7 +4,7 @@ body {
     font-size: 16px;
 }
 
-div {
+.quiz {
     padding-top: 50px;
     margin: auto;
     width: 50%;
@@ -15,12 +15,26 @@ div {
     float: right;
 }
 
-#new-question-btn {
+
+.question-btn {
+    color: white;
+    background-color: #470aad;
+    height: 30px;
+    width: 300px;
+    border-radius: 5px;
+    border: 0px;
+    margin-bottom: 5px;
+    text-align: start;
+    text-indent: 5px;
+}
+
+#start-quiz-btn {
     color: white;
     background-color: #470aad;
     height: 30px;
     width: 100px;
     border-radius: 10px;
+    border: 0px;  
 }
 
 #high-score-btn {

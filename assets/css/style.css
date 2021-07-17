@@ -1,3 +1,9 @@
+:root {
+    --dark-purple: #470aad;
+    --light-purple: #DF00FE;
+    --gray: #86848a;
+}
+
 body {
     padding: 25px;
     font-family: Arial, Helvetica, sans-serif;
@@ -18,19 +24,23 @@ body {
 
 .question-btn {
     color: white;
-    background-color: #470aad;
+    background-color: var(--dark-purple);
     height: 30px;
-    width: 300px;
+    width: 60%;
     border-radius: 5px;
     border: 0px;
     margin-bottom: 5px;
     text-align: start;
-    text-indent: 5px;
+    text-indent: 2%;    
+}
+
+.question-btn:hover {
+    background-color: var(--light-purple);
 }
 
 #start-quiz-btn {
     color: white;
-    background-color: #470aad;
+    background-color: var(--dark-purple);
     height: 30px;
     width: 100px;
     border-radius: 10px;
@@ -38,7 +48,16 @@ body {
 }
 
 #high-score-btn {
-    color: #DF00FE;
+    color: var(--light-purple);
     background-color: white;
     border: none;
+}
+
+.answerCheck {
+    color: var(--gray);
+    text-align: left;
+    font-style: italic;
+    font-size: 24px;
+    border-top: 1px solid var(--gray);
+    padding-top: 8px;
 }

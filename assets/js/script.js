@@ -4,9 +4,10 @@ var highScoreBtnEl = document.querySelector("#high-score-btn");
 var timeEl = document.querySelector("#time-left");
 var startBtnEl = document.querySelector("#start-quiz-btn");
 var quizEl = document.querySelector("#quiz");
+var answer;
 
 // global variables
-let timeLeft = 60;
+let timeLeft = 90;
 let score = 0;
 let questions = [
     {
@@ -36,7 +37,7 @@ let questions = [
 ]
 
 // start function
-var start = function() {
+var start = function () {
     // remove starting info div
     quizEl.remove();
     // ask new question
@@ -44,43 +45,81 @@ var start = function() {
 }
 
 // ask new question function
-var ask = function() {
+var ask = function () {
     // loop through available questions
-    for (var i=0; i < questions.length; i++) {
+    for (var i = 0; i < questions.length; i++) {
         // create & add div for new question to body
-        var questionEl = document.createElement("div");
-        questionEl.className = "quiz";
-        body.appendChild(questionEl);
+        quizEl = document.createElement("div");
+        quizEl.className = "quiz";
+        body.appendChild(quizEl);
         // create & add heading with question to div
         var askQuestionEl = document.createElement("h1");
         askQuestionEl.textContent = questions[i].q;
-        questionEl.appendChild(askQuestionEl);
+        answer = questions[i].a;
+        quizEl.appendChild(askQuestionEl);
         // create & add buttons for answer choices to div
+        // choice 1
         var c1 = document.createElement("button");
+        c1.setAttribute("id", "c1");
         c1.className = "question-btn";
-        console.log(questions[i].c1);
         c1.textContent = questions[i].c1;
-        questionEl.appendChild(c1);
+        quizEl.appendChild(c1);
+        var c1El = document.getElementById("c1");
+        c1El.addEventListener("click", recordAnswer);
+
+        // choice 2
         var c2 = document.createElement("button");
+        c2.setAttribute("id", "c2");
         c2.className = "question-btn";
         c2.textContent = questions[i].c2;
-        questionEl.appendChild(c2);
+        quizEl.appendChild(c2);
+        var c2El = document.getElementById("c2");
+        c2El.addEventListener("click", recordAnswer);
+
+        // choice 3
         var c3 = document.createElement("button");
+        c3.setAttribute("id", "c3");
         c3.className = "question-btn";
         c3.textContent = questions[i].c3;
-        questionEl.appendChild(c3);
+        quizEl.appendChild(c3);
+        var c3El = document.getElementById("c3");
+        c3El.addEventListener("click", recordAnswer);
+
+        // choice 4
         var c4 = document.createElement("button");
+        c4.setAttribute("id", "c4");
         c4.className = "question-btn";
         c4.textContent = questions[i].c4;
-        questionEl.appendChild(c4);
+        quizEl.appendChild(c4);
+        var c4El = document.getElementById("c4");
+        c4El.addEventListener("click", recordAnswer);
     }
 }
 
+// function to record user response to question
+var recordAnswer = function () {
+    var answerClicked = event.target.id;
+    var answerCheck = document.createElement("p")
+    answerCheck.className = "answerCheck"
+    if (answerClicked === answer) {
+        // provide answer feeedback
+        answerCheck.textContent = "Correct!";
+    }
+    else {
+        answerCheck.textContent = "Wrong!";
+    }
+    quizEl.appendChild(answerCheck);
+
+    // remove answered question after 5 seconds
+    setTimeout(function () {
+        quizEl.remove();
+        console.log("removed after 5 sec");
+    }, 5000);
+}
 
 // view high scores function
 
 // event listener for click start
-startBtnEl.addEventListener("click",start);
+startBtnEl.addEventListener("click", start);
 
-// event listener for answer selection
 // event listener for high scores

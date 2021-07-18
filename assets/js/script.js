@@ -115,14 +115,29 @@ var recordAnswer = function() {
 
      // check for new question & break out of function if not
      if (currectQ >= questions.length) {
-        console.log("last question asked");
-        return;
+        setTimeout(function () {
+            end();
+    }, 750);
+    return;
     }
 
-    // remove answered question & ask the next question after 1.5 seconds
+    // remove answered question & ask the next question after .75 seconds
     setTimeout(function () {
             start();
-    }, 1500);
+    }, 750);
+}
+
+// function for end of game
+var end = function() {
+    // remove last question
+    quizEl.remove();
+    // create & add end screen div
+    var endEl = document.createElement("div");
+    endEl.className = "quiz";
+    var h1El = document.createElement("h1");
+    h1El.textContent = "All done!";
+    endEl.appendChild(h1El);
+    body.appendChild(endEl);
 }
 
 // view high scores function

@@ -4,9 +4,10 @@ var highScoreBtnEl = document.querySelector("#high-score-btn");
 var timeEl = document.querySelector("#time");
 var startBtnEl = document.querySelector("#start-quiz-btn");
 var quizEl = document.querySelector("#quiz");
-var answer;
 
 // global variables
+var timeInterval;
+var answer;
 let timeLeft = 90;
 let score = 0;
 let currectQ = 0;
@@ -135,23 +136,27 @@ var recordAnswer = function() {
 
 // function for end of game
 var end = function() {
-    // remove last question & timer
+    // stop timer
+    clearInterval(timeInterval);
+    // remove last question
     quizEl.remove();
-    timeEl.remove();
     // create & add end screen div
     var endEl = document.createElement("div");
     endEl.className = "quiz";
     var h1El = document.createElement("h1");
     h1El.textContent = "All done!";
+    var pEl = document.createElement("p");
+    pEl.textContent = "Your final score is " + timeLeft;
     endEl.appendChild(h1El);
+    endEl.appendChild(pEl);
     body.appendChild(endEl);
 }
 
 // function to keep track of time / score
 function timer() {
     // take 1 second off the clock every second
-    var timeInterval = setInterval(function() {
-        timeEl.textContent = timeLeft;
+    timeEl.textContent = timeLeft;
+    timeInterval = setInterval(function() {
         if (timeLeft > 0) {
             timeLeft--;
         }

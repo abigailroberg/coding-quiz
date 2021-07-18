@@ -40,64 +40,62 @@ let questions = [
 var start = function () {
     // remove starting info div
     quizEl.remove();
-    // ask new question
-    ask();
+    // ask first question
+    ask(0);
 }
 
-// ask new question function
-var ask = function () {
-    // loop through available questions
-    for (var i = 0; i < questions.length; i++) {
-        // create & add div for new question to body
-        quizEl = document.createElement("div");
-        quizEl.className = "quiz";
-        body.appendChild(quizEl);
-        // create & add heading with question to div
-        var askQuestionEl = document.createElement("h1");
-        askQuestionEl.textContent = questions[i].q;
-        answer = questions[i].a;
-        quizEl.appendChild(askQuestionEl);
-        // create & add buttons for answer choices to div
+var ask = function(id) {
+    // create & add div for new question to body
+    quizEl = document.createElement("div");
+    quizEl.className = "quiz";
+    body.appendChild(quizEl);
+    
+    // create & add heading with question to div
+    var askQuestionEl = document.createElement("h1");
+    askQuestionEl.textContent = questions[id].q;
+    answer = questions[id].a;
+    quizEl.appendChild(askQuestionEl);
+    
+    // create & add buttons for answer choices to div
         // choice 1
-        var c1 = document.createElement("button");
-        c1.setAttribute("id", "c1");
-        c1.className = "question-btn";
-        c1.textContent = questions[i].c1;
-        quizEl.appendChild(c1);
-        var c1El = document.getElementById("c1");
-        c1El.addEventListener("click", recordAnswer);
+    var c1 = document.createElement("button");
+    c1.setAttribute("id", "c1");
+    c1.className = "question-btn";
+    c1.textContent = questions[id].c1;
+    quizEl.appendChild(c1);
+    var c1El = document.getElementById("c1");
+    c1El.addEventListener("click", recordAnswer);
 
         // choice 2
-        var c2 = document.createElement("button");
-        c2.setAttribute("id", "c2");
-        c2.className = "question-btn";
-        c2.textContent = questions[i].c2;
-        quizEl.appendChild(c2);
-        var c2El = document.getElementById("c2");
-        c2El.addEventListener("click", recordAnswer);
+    var c2 = document.createElement("button");
+    c2.setAttribute("id", "c2");
+    c2.className = "question-btn";
+    c2.textContent = questions[id].c2;
+    quizEl.appendChild(c2);
+    var c2El = document.getElementById("c2");
+    c2El.addEventListener("click", recordAnswer);
 
         // choice 3
-        var c3 = document.createElement("button");
-        c3.setAttribute("id", "c3");
-        c3.className = "question-btn";
-        c3.textContent = questions[i].c3;
-        quizEl.appendChild(c3);
-        var c3El = document.getElementById("c3");
-        c3El.addEventListener("click", recordAnswer);
+    var c3 = document.createElement("button");
+    c3.setAttribute("id", "c3");
+    c3.className = "question-btn";
+    c3.textContent = questions[id].c3;
+    quizEl.appendChild(c3);
+    var c3El = document.getElementById("c3");
+    c3El.addEventListener("click", recordAnswer);
 
         // choice 4
-        var c4 = document.createElement("button");
-        c4.setAttribute("id", "c4");
-        c4.className = "question-btn";
-        c4.textContent = questions[i].c4;
-        quizEl.appendChild(c4);
-        var c4El = document.getElementById("c4");
-        c4El.addEventListener("click", recordAnswer);
-    }
+    var c4 = document.createElement("button");
+    c4.setAttribute("id", "c4");
+    c4.className = "question-btn";
+    c4.textContent = questions[id].c4;
+    quizEl.appendChild(c4);
+    var c4El = document.getElementById("c4");
+    c4El.addEventListener("click", recordAnswer);
 }
 
 // function to record user response to question
-var recordAnswer = function () {
+var recordAnswer = function() {
     var answerClicked = event.target.id;
     var answerCheck = document.createElement("p")
     answerCheck.className = "answerCheck"
@@ -108,12 +106,14 @@ var recordAnswer = function () {
     else {
         answerCheck.textContent = "Wrong!";
     }
+    // display feedback
     quizEl.appendChild(answerCheck);
 
-    // remove answered question after 5 seconds
+    // remove answered question & ask the next question after 5 seconds
     setTimeout(function () {
         quizEl.remove();
-        console.log("removed after 5 sec");
+        // ask next question
+        ask(1);
     }, 5000);
 }
 

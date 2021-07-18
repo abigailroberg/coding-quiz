@@ -9,6 +9,7 @@ var answer;
 // global variables
 let timeLeft = 90;
 let score = 0;
+let currectQ = 0;
 let questions = [
     {
         q: "Inside which HTML element do we put the JavaScript?",
@@ -37,11 +38,11 @@ let questions = [
 ]
 
 // start function
-var start = function () {
+var start = function() {
     // remove starting info div
     quizEl.remove();
-    // ask first question
-    ask(0);
+    // ask next question
+    ask(currectQ);
 }
 
 var ask = function(id) {
@@ -109,12 +110,19 @@ var recordAnswer = function() {
     // display feedback
     quizEl.appendChild(answerCheck);
 
-    // remove answered question & ask the next question after 5 seconds
+     // move to next question
+     currectQ++;
+
+     // check for new question & break out of function if not
+     if (currectQ >= questions.length) {
+        console.log("last question asked");
+        return;
+    }
+
+    // remove answered question & ask the next question after 1.5 seconds
     setTimeout(function () {
-        quizEl.remove();
-        // ask next question
-        ask(1);
-    }, 5000);
+            start();
+    }, 1500);
 }
 
 // view high scores function

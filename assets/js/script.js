@@ -1,7 +1,7 @@
 // 
 var body = document.body;
 var highScoreBtnEl = document.querySelector("#high-score-btn");
-var timeEl = document.querySelector("#time-left");
+var timeEl = document.querySelector("#time");
 var startBtnEl = document.querySelector("#start-quiz-btn");
 var quizEl = document.querySelector("#quiz");
 var answer;
@@ -37,10 +37,15 @@ let questions = [
     },
 ]
 
+
 // start function
 var start = function() {
     // remove starting info div
     quizEl.remove();
+
+    // start timer
+    timer();
+
     // ask next question
     ask(currectQ);
 }
@@ -106,6 +111,7 @@ var recordAnswer = function() {
     }
     else {
         answerCheck.textContent = "Wrong!";
+        timeLeft = timeLeft - 5;
     }
     // display feedback
     quizEl.appendChild(answerCheck);
@@ -129,8 +135,9 @@ var recordAnswer = function() {
 
 // function for end of game
 var end = function() {
-    // remove last question
+    // remove last question & timer
     quizEl.remove();
+    timeEl.remove();
     // create & add end screen div
     var endEl = document.createElement("div");
     endEl.className = "quiz";
@@ -138,6 +145,21 @@ var end = function() {
     h1El.textContent = "All done!";
     endEl.appendChild(h1El);
     body.appendChild(endEl);
+}
+
+// function to keep track of time / score
+function timer() {
+    // take 1 second off the clock every second
+    var timeInterval = setInterval(function() {
+        timeEl.textContent = timeLeft;
+        if (timeLeft > 0) {
+            timeLeft--;
+        }
+        else if(timeLeft <= 0) {
+            clearInterval(timeInterval);
+            end();
+        }
+    }, 1000);
 }
 
 // view high scores function

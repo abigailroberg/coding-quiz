@@ -2,14 +2,16 @@
 var body = document.body;
 var highScoreBtnEl = document.querySelector("#high-score-btn");
 var timeEl = document.querySelector("#time");
+var timeTxtEl = document.querySelector("#time-text");
 var startBtnEl = document.querySelector("#start-quiz-btn");
 var quizEl = document.querySelector("#quiz");
 
 // global variables
 var answer;
-let timeLeft = 60;
+let timeLeft = 5;
 let score = 0;
 let currectQ = 0;
+var initials = "";
 var questions = [
     {
         q: "Inside which HTML element do we put the JavaScript?",
@@ -36,7 +38,21 @@ var questions = [
         a: "c1"
     },
 ]
-
+var highScores = [
+    {
+        initials: "TJR",
+        score: 0
+    },
+    {
+        initials: "EPB",
+        score: 1000
+    },
+    {
+        initials: "AMR",
+        score: 20
+    }  
+    ];
+console.log(highScores);
 
 // start function
 var start = function() {
@@ -138,30 +154,89 @@ var end = function() {
     // remove last question
     quizEl.remove();
     // create end screen div
-    var endEl = document.createElement("div");
-    endEl.className = "quiz end";
+    quizEl = document.createElement("div");
+    quizEl.className = "quiz end";
     var h1El = document.createElement("h1");
     h1El.textContent = "All done!";
     var pEl = document.createElement("p");
     pEl.textContent = "Your final score is " + timeLeft;
-    endEl.appendChild(h1El);
-    endEl.appendChild(pEl);
+    // add heading and score to the div
+    quizEl.appendChild(h1El);
+    quizEl.appendChild(pEl);
     // create form input for high scores page
     var formEl = document.createElement("form");
     var labelEl = document.createElement("label");
     labelEl.textContent = "Enter initials: "
     var inputEl = document.createElement("input");
     inputEl.setAttribute("id", "initials");
-    var btnEl = document.createElement("button");
-    btnEl.className = "question-btn";
-    btnEl.textContent = "Submit";
-    btnEl.setAttribute("id", "submit");
+    var submitBtnEl = document.createElement("button");
+    submitBtnEl.className = "question-btn";
+    submitBtnEl.textContent = "Submit";
+    submitBtnEl.setAttribute("id", "submit");
+    // add form elements to the form
     formEl.appendChild(labelEl);
     formEl.appendChild(inputEl);
-    formEl.appendChild(btnEl);
-    endEl.appendChild(formEl);
+    formEl.appendChild(submitBtnEl);
+    // add form to the div
+    quizEl.appendChild(formEl);
     // add div with all elements appended
-    body.appendChild(endEl);
+    body.appendChild(quizEl);
+    // record initials entered
+    initials = document.querySelector("#initials").value;
+    // add event listener to submit button
+    submitBtnEl.addEventListener("click", submit);
+}
+
+// function to submit your high score
+var submit = function() {
+    // create obj with new high score
+    var obj = {
+        initials: initials,
+        score: timeLeft
+    };
+    // add new score to highScores array
+    highScores.push(obj);
+    // view high scores list
+    viewHighScores();
+}
+
+// function to view list of high scores
+var viewHighScores = function() {
+    // sort high scores array
+    highScores.sort(function(a,b) {
+        return b.score - a.score;
+    });
+    // remove screen elements
+    quizEl.remove();
+    highScoreBtnEl.remove();
+    timeTxtEl.remove();
+    // create high scores div
+    var highScoresEl = document.createElement("div");
+    highScoresEl.className ="quiz scores";
+    // add heading
+    var headingEl = document.createElement("h1");
+    headingEl.textContent = "High Scores";
+    highScoresEl.appendChild(headingEl);
+    // add list of scores
+    var listEl = document.createElement("ul");
+    for (var i = 0; i < highScores.length; i++) {
+        var itemEl = document.createElement("li");
+        itemEl.textContent = highScores[i].initials + " - " + highScores[i].score;
+        listEl.appendChild(itemEl);
+    }
+    highScoresEl.appendChild(listEl);
+    // add buttons
+    var backBtnEl = document.createElement("button");
+    backBtnEl.textContent = "Go back";
+    backBtnEl.className = "question-btn scores-btn";
+    backBtnEl.setAttribute("id", "back-btn");
+    highScoresEl.appendChild(backBtnEl);
+    var clearBtnEl = document.createElement("button");
+    clearBtnEl.textContent = "Clear high scores";
+    clearBtnEl.className = "question-btn scores-btn"
+    highScoresEl.appendChild(clearBtnEl)
+    // display div
+    body.appendChild(highScoresEl);
 }
 
 // function to keep track of time / score
@@ -176,16 +251,15 @@ function timer() {
         }
         // if time is up or quiz is complete, stop the timer loop & run the end of quiz function
         else if(timeLeft <= 0 || currectQ >= questions.length) {
-            timeEl.textContent = 0;
-            end();
+            timeEl.textContent = "";
             clearInterval(timeInterval);
+            end();
         }
     }, 1000);
 }
-
-// view high scores function
 
 // event listener for click start
 startBtnEl.addEventListener("click", start);
 
 // event listener for high scores
+highScoreBtnEl.addEventListener("click", viewHighScores);

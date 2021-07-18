@@ -1,4 +1,4 @@
-// 
+// select elements
 var body = document.body;
 var highScoreBtnEl = document.querySelector("#high-score-btn");
 var timeEl = document.querySelector("#time");
@@ -6,12 +6,11 @@ var startBtnEl = document.querySelector("#start-quiz-btn");
 var quizEl = document.querySelector("#quiz");
 
 // global variables
-var timeInterval;
 var answer;
-let timeLeft = 90;
+let timeLeft = 60;
 let score = 0;
 let currectQ = 0;
-let questions = [
+var questions = [
     {
         q: "Inside which HTML element do we put the JavaScript?",
         c1: "<script>",
@@ -128,41 +127,58 @@ var recordAnswer = function() {
     return;
     }
 
-    // remove answered question & ask the next question after .75 seconds
+    // remove answered question & ask the next question after .5 seconds
     setTimeout(function () {
             start();
-    }, 750);
+    }, 500);
 }
 
 // function for end of game
 var end = function() {
-    // stop timer
-    clearInterval(timeInterval);
     // remove last question
     quizEl.remove();
-    // create & add end screen div
+    // create end screen div
     var endEl = document.createElement("div");
-    endEl.className = "quiz";
+    endEl.className = "quiz end";
     var h1El = document.createElement("h1");
     h1El.textContent = "All done!";
     var pEl = document.createElement("p");
     pEl.textContent = "Your final score is " + timeLeft;
     endEl.appendChild(h1El);
     endEl.appendChild(pEl);
+    // create form input for high scores page
+    var formEl = document.createElement("form");
+    var labelEl = document.createElement("label");
+    labelEl.textContent = "Enter initials: "
+    var inputEl = document.createElement("input");
+    inputEl.setAttribute("id", "initials");
+    var btnEl = document.createElement("button");
+    btnEl.className = "question-btn";
+    btnEl.textContent = "Submit";
+    btnEl.setAttribute("id", "submit");
+    formEl.appendChild(labelEl);
+    formEl.appendChild(inputEl);
+    formEl.appendChild(btnEl);
+    endEl.appendChild(formEl);
+    // add div with all elements appended
     body.appendChild(endEl);
 }
 
 // function to keep track of time / score
 function timer() {
-    // take 1 second off the clock every second
+    // set the on screen clock
     timeEl.textContent = timeLeft;
-    timeInterval = setInterval(function() {
-        if (timeLeft > 0) {
+    var timeInterval = setInterval(function() {
+        // take 1 second off if there is time remaining & the quiz is incomplete
+        if (timeLeft > 0 && currectQ < questions.length) {
             timeLeft--;
+            timeEl.textContent = timeLeft;
         }
-        else if(timeLeft <= 0) {
-            clearInterval(timeInterval);
+        // if time is up or quiz is complete, stop the timer loop & run the end of quiz function
+        else if(timeLeft <= 0 || currectQ >= questions.length) {
+            timeEl.textContent = 0;
             end();
+            clearInterval(timeInterval);
         }
     }, 1000);
 }

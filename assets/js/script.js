@@ -11,7 +11,6 @@ var answer;
 let timeLeft = 5;
 let score = 0;
 let currectQ = 0;
-var initials = "";
 var questions = [
     {
         q: "Inside which HTML element do we put the JavaScript?",
@@ -40,19 +39,10 @@ var questions = [
 ]
 var highScores = [
     {
-        initials: "TJR",
+        initials: "Dummy Score",
         score: 0
     },
-    {
-        initials: "EPB",
-        score: 1000
-    },
-    {
-        initials: "AMR",
-        score: 20
-    }  
-    ];
-console.log(highScores);
+];
 
 // start function
 var start = function() {
@@ -181,31 +171,49 @@ var end = function() {
     quizEl.appendChild(formEl);
     // add div with all elements appended
     body.appendChild(quizEl);
-    // record initials entered
-    initials = document.querySelector("#initials").value;
     // add event listener to submit button
     submitBtnEl.addEventListener("click", submit);
 }
 
 // function to submit your high score
 var submit = function() {
+    // record initials entered
+    var initials = document.querySelector("#initials").value;
     // create obj with new high score
     var obj = {
         initials: initials,
         score: timeLeft
     };
+    // retrieve existing scores from local storage if there are any
+    var arrayChk = JSON.parse(localStorage.getItem("highScores"));
+    if(arrayChk) {
+        getScores();
+    }
+    // otherwise remove dummy score from array
+    else {
+        highScores.pop();
+    }
     // add new score to highScores array
     highScores.push(obj);
+    saveScores();
     // view high scores list
     viewHighScores();
 }
 
 // function to view list of high scores
 var viewHighScores = function() {
-    // sort high scores array
-    highScores.sort(function(a,b) {
-        return b.score - a.score;
-    });
+    // retrieve high scores array from local storage
+    getScores();
+    // check for existing scores in local storage
+    if (!highScores) {
+        console.log("local storage array is empty");
+    }
+    else {
+        // sort high scores array
+        highScores.sort(function(a,b) {
+            return b.score - a.score;
+            });
+    }
     // remove screen elements
     quizEl.remove();
     highScoreBtnEl.remove();
@@ -217,14 +225,19 @@ var viewHighScores = function() {
     var headingEl = document.createElement("h1");
     headingEl.textContent = "High Scores";
     highScoresEl.appendChild(headingEl);
-    // add list of scores
-    var listEl = document.createElement("ul");
+    // add list of scores if there are any
+    if (!highScores) {
+        console.log("local storage is empty");
+    }
+    else {
+        var listEl = document.createElement("ol");
     for (var i = 0; i < highScores.length; i++) {
         var itemEl = document.createElement("li");
         itemEl.textContent = highScores[i].initials + " - " + highScores[i].score;
         listEl.appendChild(itemEl);
     }
     highScoresEl.appendChild(listEl);
+    }
     // add buttons
     var backBtnEl = document.createElement("button");
     backBtnEl.textContent = "Go back";
@@ -237,6 +250,31 @@ var viewHighScores = function() {
     highScoresEl.appendChild(clearBtnEl)
     // display div
     body.appendChild(highScoresEl);
+    // save all scores to local storage
+    saveScores();
+    clearBtnEl.addEventListener("click", clearScores);
+    backBtnEl.addEventListener("click", goHome);
+}
+
+// function to save high score array to local storage
+var saveScores = function() {
+    localStorage.setItem("highScores", JSON.stringify(highScores));
+}
+
+// function to get high score array from local storage
+var getScores = function() {
+    highScores = JSON.parse(localStorage.getItem("highScores"));
+}
+
+// function to clear high scores
+var clearScores = function() {
+    localStorage.removeItem("highScores");
+    goHome();
+}
+
+// function to go home
+var goHome = function() {
+    window.location = "../index.html"
 }
 
 // function to keep track of time / score
@@ -251,6 +289,9 @@ function timer() {
         }
         // if time is up or quiz is complete, stop the timer loop & run the end of quiz function
         else if(timeLeft <= 0 || currectQ >= questions.length) {
+            // set negative scores to 0
+            timeLeft = 0;
+            // display nothing for time
             timeEl.textContent = "";
             clearInterval(timeInterval);
             end();

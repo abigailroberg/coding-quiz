@@ -8,7 +8,7 @@ var quizEl = document.querySelector("#quiz");
 
 // global variables
 var answer;
-let timeLeft = 5;
+let timeLeft = 60;
 let score = 0;
 let currectQ = 0;
 var questions = [
@@ -21,12 +21,12 @@ var questions = [
         a: "c1"
     },
     {
-        q: "What is the correct syntax for referring to an external script called 'xxx.js'?",
-        c1: "<script name ='xxx.js'>",
-        c2: "<script href ='xxx.js'>",
-        c3: "<script src ='xxx.js'>",
-        c4: "<script ref ='xxx.js'>",
-        a: "c3"
+        q: "How do you find the minimum value of x and y using JavaScript?",
+        c1: "min(x, y)",
+        c2: "Math.min(x, y)",
+        c3: "Math.min(x & y)",
+        c4: "min(x & y)",
+        a: "c2"
     },
     {
         q: "How do you write 'Hello World' in an alert box?",
@@ -36,6 +36,22 @@ var questions = [
         c4: "alertBox('Hello World')",
         a: "c1"
     },
+    {
+        q: "Which 'if' statement would you use to execute code if 'x' is equal to 2?",
+        c1: "if(x 2)",
+        c2: "if(x = 2)",
+        c3: "if(x === 2)",
+        c4: "if(x != 2)",
+        a: "c3"
+    },
+    {
+        q: "Which is the correct way to create a new JS array?",
+        c1: "var array = ('x', 'y', 'z')",
+        c2: "let array = ('x', 'y', 'z')",
+        c3: "let array = [x, y, z]",
+        c4: "var array = [('x', 'y', 'z']",
+        a: "c4"
+    }
 ]
 var highScores = [
     {
@@ -290,7 +306,9 @@ function timer() {
         // if time is up or quiz is complete, stop the timer loop & run the end of quiz function
         else if(timeLeft <= 0 || currectQ >= questions.length) {
             // set negative scores to 0
-            timeLeft = 0;
+            if (timeLeft < 0) {
+                timeLeft = 0;
+            }
             // display nothing for time
             timeEl.textContent = "";
             clearInterval(timeInterval);

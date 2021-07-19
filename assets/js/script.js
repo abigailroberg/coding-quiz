@@ -274,7 +274,7 @@ var clearScores = function() {
 
 // function to go home
 var goHome = function() {
-    window.location = "../index.html"
+    window.location.href = "./index.html"
 }
 
 // function to keep track of time / score

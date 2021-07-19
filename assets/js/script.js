@@ -133,7 +133,7 @@ var recordAnswer = function() {
     }
     else {
         answerCheck.textContent = "Wrong!";
-        timeLeft = timeLeft - 5;
+        timeLeft = timeLeft - 10;
     }
     // display feedback
     quizEl.appendChild(answerCheck);
@@ -145,7 +145,7 @@ var recordAnswer = function() {
      if (currectQ >= questions.length) {
         setTimeout(function () {
             end();
-    }, 750);
+    }, 500);
     return;
     }
 
